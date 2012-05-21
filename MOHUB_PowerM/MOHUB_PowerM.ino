@@ -247,48 +247,63 @@ void read_analog_in(void)
 //------------------------------------------------
 //Write Simulation values to the Array, only for testing
 //------------------------------------------------
+#ifdef SIMULATION_MODE
 void set_simulation_to_array(void)
 {
-      static long sim_strom = 500;
+      static long sim_strom[5] = {600,400,300,500,450};
       static long sim_volt = 1354;
       long sim_leistung = 0;
       int help_sim = 0;
+      static unsigned long previous_millis_SIM_sample = millis();
       
       
-      help_sim = random(200, 800);
-      if(help_sim > sim_strom)sim_strom++;
-      if(help_sim < sim_strom)sim_strom--;
-      
-      
-    
+      if((millis() - previous_millis_SIM_sample) > 100 )
+      {
+        previous_millis_SIM_sample = millis();
+        
+        
+        help_sim = random(400, 1400);
+        if(help_sim > sim_strom[0])sim_strom[0]++;
+        if(help_sim < sim_strom[0])sim_strom[0]--;
   
- 
-      mohub_power_vals[0].spannung = (unsigned int)(sim_volt);
+  
+        for(unsigned char cnt_s=1;cnt_s<5;cnt_s++)
+        {
+          help_sim = random(200, 900);
+          if(help_sim > sim_strom[cnt_s])sim_strom[cnt_s]++;
+          if(help_sim < sim_strom[cnt_s])sim_strom[cnt_s]--;
+        }  
+        
       
-      
-      mohub_power_vals[1].spannung = mohub_power_vals[0].spannung;
-      mohub_power_vals[2].spannung = mohub_power_vals[0].spannung;
-      mohub_power_vals[3].spannung = mohub_power_vals[0].spannung;
-      mohub_power_vals[4].spannung = mohub_power_vals[0].spannung;
     
-      mohub_power_vals[0].strom = (unsigned int)(sim_strom+400);
-      mohub_power_vals[0].leistung = (unsigned int)(((long)mohub_power_vals[0].strom * (long)mohub_power_vals[0].spannung) / 1000);
+   
+        mohub_power_vals[0].spannung = (unsigned int)(sim_volt+random(10, 30));
+        
+        
+        mohub_power_vals[1].spannung = mohub_power_vals[0].spannung;
+        mohub_power_vals[2].spannung = mohub_power_vals[0].spannung;
+        mohub_power_vals[3].spannung = mohub_power_vals[0].spannung;
+        mohub_power_vals[4].spannung = mohub_power_vals[0].spannung;
       
-      //Current Group 1
-      mohub_power_vals[1].strom = (unsigned int)(sim_strom+20);
-      mohub_power_vals[1].leistung = (unsigned int)(((long)mohub_power_vals[1].strom * (long)mohub_power_vals[1].spannung) / 1000);
-      //Current Group 2
-      mohub_power_vals[2].strom = (unsigned int)(sim_strom+50);
-      mohub_power_vals[2].leistung = (unsigned int)(((long)mohub_power_vals[2].strom * (long)mohub_power_vals[2].spannung) / 1000);
-      //Current Group 3
-      mohub_power_vals[3].strom = (unsigned int)(sim_strom+100);
-      mohub_power_vals[3].leistung = (unsigned int)(((long)mohub_power_vals[3].strom * (long)mohub_power_vals[3].spannung) / 1000);
-      //Current Group 4
-      mohub_power_vals[4].strom = (unsigned int)(sim_strom+10);
-      mohub_power_vals[4].leistung = (unsigned int)(((long)mohub_power_vals[4].strom * (long)mohub_power_vals[4].spannung) / 1000);
+        mohub_power_vals[0].strom = (unsigned int)(sim_strom[0]);
+        mohub_power_vals[0].leistung = (unsigned int)(((long)mohub_power_vals[0].strom * (long)mohub_power_vals[0].spannung) / 1000);
+        
+        //Current Group 1
+        mohub_power_vals[1].strom = (unsigned int)(sim_strom[1]);
+        mohub_power_vals[1].leistung = (unsigned int)(((long)mohub_power_vals[1].strom * (long)mohub_power_vals[1].spannung) / 1000);
+        //Current Group 2
+        mohub_power_vals[2].strom = (unsigned int)(sim_strom[2]);
+        mohub_power_vals[2].leistung = (unsigned int)(((long)mohub_power_vals[2].strom * (long)mohub_power_vals[2].spannung) / 1000);
+        //Current Group 3
+        mohub_power_vals[3].strom = (unsigned int)(sim_strom[3]);
+        mohub_power_vals[3].leistung = (unsigned int)(((long)mohub_power_vals[3].strom * (long)mohub_power_vals[3].spannung) / 1000);
+        //Current Group 4
+        mohub_power_vals[4].strom = (unsigned int)(sim_strom[4]);
+        mohub_power_vals[4].leistung = (unsigned int)(((long)mohub_power_vals[4].strom * (long)mohub_power_vals[4].spannung) / 1000);
+      }
   
 }
-
+#endif
 
 //------------------------------------------------
 //Accumulate the Ah and Wh

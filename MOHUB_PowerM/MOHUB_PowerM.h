@@ -76,7 +76,10 @@ void calc_Ah_Wh(void);
 void calc_power_rank(void);
 void send_data_to_UART(void);
 void select_HEF4051(unsigned char cannel);
+
+#ifdef SIMULATION_MODE
 void set_simulation_to_array(void);
+#endif
 
 
 //------------------------------------------------
