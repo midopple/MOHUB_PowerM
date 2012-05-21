@@ -363,7 +363,8 @@ void send_data_to_UART(void)
         Serial.print(sum_leistung);PRINT_PGM_STR(";");
         PRINT_PGM_STR("0;");
         Serial.print((float)sum_Ah/10);PRINT_PGM_STR(";");
-        Serial.print(sum_Wh);PRINT_PGM_STR(";\r\n");  
+        Serial.print(sum_Wh);PRINT_PGM_STR(";\r\n");
+        PRINT_PGM_STR("I Love OTELO\r\n");        
         sum_strom = 0;
         sum_leistung = 0;
         sum_Ah = 0;
