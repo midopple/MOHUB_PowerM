@@ -90,7 +90,12 @@ void loop()
 {
   
   //-- Read Analog IN Values --
-  read_analog_in();
+  #ifndef SIMULATION_MODE
+    read_analog_in();
+  #else
+    set_simulation_to_array();
+    AD_values_OK = 1;
+  #endif
   //---------------------------
   
   //-- Calculate Ah, Wh -------
@@ -100,6 +105,7 @@ void loop()
   //---------------------------
   //-- Send to Uart -----------
   if(AD_values_OK)send_data_to_UART();
+  
   //---------------------------
   
 
@@ -236,6 +242,53 @@ void read_analog_in(void)
 
     }
 }  
+
+
+//------------------------------------------------
+//Write Simulation values to the Array, only for testing
+//------------------------------------------------
+void set_simulation_to_array(void)
+{
+      static long sim_strom = 500;
+      static long sim_volt = 1354;
+      long sim_leistung = 0;
+      int help_sim = 0;
+      
+      
+      help_sim = random(200, 800);
+      if(help_sim > sim_strom)sim_strom++;
+      if(help_sim < sim_strom)sim_strom--;
+      
+      
+    
+  
+ 
+      mohub_power_vals[0].spannung = (unsigned int)(sim_volt);
+      
+      
+      mohub_power_vals[1].spannung = mohub_power_vals[0].spannung;
+      mohub_power_vals[2].spannung = mohub_power_vals[0].spannung;
+      mohub_power_vals[3].spannung = mohub_power_vals[0].spannung;
+      mohub_power_vals[4].spannung = mohub_power_vals[0].spannung;
+    
+      mohub_power_vals[0].strom = (unsigned int)(sim_strom+400);
+      mohub_power_vals[0].leistung = (unsigned int)(((long)mohub_power_vals[0].strom * (long)mohub_power_vals[0].spannung) / 1000);
+      
+      //Current Group 1
+      mohub_power_vals[1].strom = (unsigned int)(sim_strom+20);
+      mohub_power_vals[1].leistung = (unsigned int)(((long)mohub_power_vals[1].strom * (long)mohub_power_vals[1].spannung) / 1000);
+      //Current Group 2
+      mohub_power_vals[2].strom = (unsigned int)(sim_strom+50);
+      mohub_power_vals[2].leistung = (unsigned int)(((long)mohub_power_vals[2].strom * (long)mohub_power_vals[2].spannung) / 1000);
+      //Current Group 3
+      mohub_power_vals[3].strom = (unsigned int)(sim_strom+100);
+      mohub_power_vals[3].leistung = (unsigned int)(((long)mohub_power_vals[3].strom * (long)mohub_power_vals[3].spannung) / 1000);
+      //Current Group 4
+      mohub_power_vals[4].strom = (unsigned int)(sim_strom+10);
+      mohub_power_vals[4].leistung = (unsigned int)(((long)mohub_power_vals[4].strom * (long)mohub_power_vals[4].spannung) / 1000);
+  
+}
+
 
 //------------------------------------------------
 //Accumulate the Ah and Wh
@@ -391,5 +444,6 @@ void send_data_to_UART(void)
   }
   
 }
+
 
 
