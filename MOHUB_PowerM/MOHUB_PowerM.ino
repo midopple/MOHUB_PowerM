@@ -263,14 +263,14 @@ void set_simulation_to_array(void)
         
         
         help_sim = random(400, 1400);
-        if(help_sim > sim_strom[0])sim_strom[0]++;
+        if(help_sim > sim_strom[0])sim_strom[0]+=2;
         if(help_sim < sim_strom[0])sim_strom[0]--;
   
   
         for(unsigned char cnt_s=1;cnt_s<5;cnt_s++)
         {
-          help_sim = random(200, 900);
-          if(help_sim > sim_strom[cnt_s])sim_strom[cnt_s]++;
+          help_sim = random(200, 600+cnt_s*100);
+          if(help_sim > sim_strom[cnt_s])sim_strom[cnt_s]+=2;
           if(help_sim < sim_strom[cnt_s])sim_strom[cnt_s]--;
         }  
         
